@@ -32,8 +32,8 @@ steps:
       - gcloud auth configure-docker
       - gcloud container clusters get-credentials my-cluster --region us-central1
       - kubectl apply -f deployment.yaml
-      
+
   - name: hello
     image: busybox
     commands:
-   - echo NEW_AWESOME_PIPELINE_JUST_GOT_EXECUTED!
+      - echo NEW_AWESOME_PIPELINE_JUST_GOT_EXECUTED!
