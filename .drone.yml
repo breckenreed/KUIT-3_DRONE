@@ -3,37 +3,26 @@ type: docker
 
 steps:
   - name: lint
-    image: node:14
+    image: alpine
     commands:
-      - npm install
-      - npm run lint
+      - echo "Running linting step"
 
   - name: test
-    image: node:14
+    image: alpine
     commands:
-      - npm install
-      - npm run test
+      - echo "Running testing step"
 
   - name: build
-    image: node:14
+    image: alpine
     commands:
-      - npm install
-      - npm run build
+      - echo "Running build step"
 
-  - name: dockerize
-    image: docker:latest
+  - name: deploy-dev
+    image: alpine
     commands:
-      - docker build -t myapp .
-      - docker push myapp:latest
+      - echo "Deploying to dev environment"
 
-  - name: deploy
-    image: gcr.io/cloud-builders/gcloud
+  - name: deploy-prod
+    image: alpine
     commands:
-      - gcloud auth configure-docker
-      - gcloud container clusters get-credentials my-cluster --region us-central1
-      - kubectl apply -f deployment.yaml
-
-  - name: hello
-    image: busybox
-    commands:
-      - echo NEW_AWESOME_PIPELINE_JUST_GOT_EXECUTED!
+      - echo "Deploying to prod environment"
