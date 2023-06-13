@@ -1,28 +1,39 @@
 kind: pipeline
 type: docker
-name: en
 
 steps:
-- name: greeting
-  image: alpine
-  commands:
-  - echo HELLOWTF1337
+  - name: lint
+    image: node:14
+    commands:
+      - npm install
+      - npm run lint
 
-trigger:
-  event:
-  - push
+  - name: test
+    image: node:14
+    commands:
+      - npm install
+      - npm run test
 
----
-kind: pipeline
-type: docker
-name: fr
+  - name: build
+    image: node:14
+    commands:
+      - npm install
+      - npm run build
 
-steps:
-- name: greeting
-  image: alpine
-  commands:
-  - echo bonjour monde
+  - name: dockerize
+    image: docker:latest
+    commands:
+      - docker build -t myapp .
+      - docker push myapp:latest
 
-trigger:
-  event:
-  - pull_request
+  - name: deploy
+    image: gcr.io/cloud-builders/gcloud
+    commands:
+      - gcloud auth configure-docker
+      - gcloud container clusters get-credentials my-cluster --region us-central1
+      - kubectl apply -f deployment.yaml
+      
+  - name: hello
+    image: busybox
+    commands:
+   - echo NEW_AWESOME_PIPELINE_JUST_GOT_EXECUTED!
