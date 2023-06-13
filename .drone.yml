@@ -28,7 +28,19 @@ platform:
 
 steps:
 - name: test
-  image: gcr.io/library/golang
+  image: alpine
+  commands:
+  - echo IT_GOES_DEEPER
+
+---
+kind: pipeline
+type: docker
+name: default3
+
+steps:
+- name: test
+  image: golang:1.13
   commands:
   - go build
   - go test -v
+
