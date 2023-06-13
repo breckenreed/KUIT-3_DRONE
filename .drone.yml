@@ -1,28 +1,18 @@
+---
 kind: pipeline
 type: docker
+name: default
+
+platform:
+  os: linux
+  arch: arm64
 
 steps:
-  - name: lint
-    image: alpine
-    commands:
-      - echo "Running linting step"
+- name: hello
+  image: busybox
+  commands:
+  - echo SOMETHINGOFMYCHOICE1337
 
-  - name: test
-    image: alpine
-    commands:
-      - echo "Running testing step"
-
-  - name: build
-    image: alpine
-    commands:
-      - echo "Running build step"
-
-  - name: deploy-dev
-    image: alpine
-    commands:
-      - echo "Deploying to dev environment"
-
-  - name: deploy-prod
-    image: alpine
-    commands:
-      - echo "Deploying to prod environment"
+trigger:
+  branch:
+  - main
