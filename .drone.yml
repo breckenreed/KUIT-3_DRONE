@@ -1,18 +1,28 @@
+kind: pipeline
+type: docker
+name: en
+
+steps:
+- name: greeting
+  image: alpine
+  commands:
+  - echo HELLOWTF1337
+
+trigger:
+  event:
+  - push
+
 ---
 kind: pipeline
 type: docker
-name: default
-
-platform:
-  os: linux
-  arch: arm64
+name: fr
 
 steps:
-- name: hello
-  image: busybox
+- name: greeting
+  image: alpine
   commands:
-  - echo SOMETHINGOFMYCHOICE1337
- 
+  - echo bonjour monde
+
 trigger:
-  branch:
-  - main
+  event:
+  - pull_request
