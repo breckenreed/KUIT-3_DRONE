@@ -1,10 +1,30 @@
 kind: pipeline
 type: docker
-name: default
 
 steps:
-- name: greeting
-  image: alpine
-  commands:
-  - echo hello
-  - echo world
+  - name: build
+    image: docker
+    commands:
+      - docker build -t myapp .
+
+  - name: test
+    image: python:3.9
+    commands:
+      - pip install -r requirements.txt
+      - python run_tests.py
+
+  - name: lint
+    image: node:14
+    commands:
+      - npm install eslint
+      - npx eslint src/
+
+  - name: deploy-staging
+    image: gcr.io/cloud-builders/gcloud
+    commands:
+      - gcloud app deploy --project myproject --version staging
+
+  - name: deploy-production
+    image: gcr.io/cloud-builders/gcloud
+    commands:
+      - gcloud app deploy --project myproject --version production
