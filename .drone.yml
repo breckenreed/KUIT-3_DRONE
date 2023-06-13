@@ -1,46 +1,39 @@
----
 kind: pipeline
 type: docker
-name: default
-
-platform:
-  os: linux
-  arch: arm64
+name: drone-ci-pipeline
 
 steps:
-- name: hello
-  image: busybox
-  commands:
-  - echo AWESOME_PIPELINE_HERE
+  - name: checkout
+    image: alpine/git
+    pull: always
+    settings:
+      clone:
+        depth: 1
+    commands:
+      - git clone <repository-url> .
+      - git checkout <branch>
 
-trigger:
-  branch:
-  - main
+  - name: build
+    image: node:lts
+    pull: always
+    commands:
+      - npm install
+      - npm run build
 
----
-kind: pipeline
-type: docker
-name: default2
+  - name: test
+    image: node:lts
+    pull: always
+    commands:
+      - npm test
 
-platform:
-  os: linux
-  arch: arm64
+  - name: generate-artifacts
+    image: node:lts
+    pull: always
+    commands:
+      - npm run generate-artifacts
 
-steps:
-- name: test
-  image: alpine
-  commands:
-  - echo IT_GOES_DEEPER
-
----
-kind: pipeline
-type: docker
-name: default3
-
-steps:
-- name: test
-  image: golang:1.13
-  commands:
-  - go build
-  - go test -v
-
+  - name: deploy
+    image: <deployment-image>
+    pull: always
+    commands:
+      - ./deploy.sh
