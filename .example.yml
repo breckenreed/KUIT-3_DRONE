@@ -1,0 +1,41 @@
+---
+kind: pipeline
+type: docker
+name: pipeline
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: setup
+    image: alpine
+    commands:
+      - echo "Setting up the pipeline"
+
+  - name: build
+    image: gcc:latest
+    commands:
+      - g++ -o hello_cpp hello.cpp
+      - ./hello_cpp
+
+  - name: test-python
+    image: python:3.9
+    commands:
+      - python test.py
+
+  - name: lint-python
+    image: python:3.9
+    commands:
+      - pip install pylint
+      - pylint script.py
+
+  - name: cleanup
+    image: alpine
+    commands:
+      - rm -rf build/
+      - echo "Cleanup completed"
+ 
+trigger:
+  branch:
+  - main
