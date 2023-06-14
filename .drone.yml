@@ -4,27 +4,26 @@ type: docker
 name: pipeline
 
 steps:
-  - name: setup
+  - name: stepone
     image: alpine
     commands:
       - echo "Setting up the pipeline"
 
-  - name: build
-    image: gcc:latest
+  - name: write2
+    image: alpine
+    environment: 
+      TEST_SECRET:
+        from_secret: testsecret
     commands:
-      - g++ -o hello_cpp hello.cpp
-      - ./hello_cpp
+      - echo "SECRET=$TEST_SECRET" > sourceme
+      - echo "SOMEVAR=somevalue" >> sourceme
 
-  - name: test-python
-    image: python:3.9
+  - name: read3
+    image: alpine
     commands:
-      - python test.py
+      - source sourceme
+      - env
 
-  - name: lint-python
-    image: python:3.9
-    commands:
-      - pip install pylint
-      - pylint script.py
 
   - name: cleanup
     image: alpine
