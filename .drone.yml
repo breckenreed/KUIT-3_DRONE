@@ -1,39 +1,37 @@
+---
 kind: pipeline
 type: docker
-name: drone-ci-pipeline
+name: pipeline
 
 steps:
-  - name: checkout
-    image: alpine/git
-    pull: always
-    settings:
-      clone:
-        depth: 1
+  - name: setup
+    image: alpine
     commands:
-      - git clone <repository-url> .
-      - git checkout <branch>
+      - echo "Setting up the pipeline"
 
   - name: build
-    image: node:lts
-    pull: always
+    image: gcc:latest
     commands:
-      - npm install
-      - npm run build
+      - g++ -o hello_cpp hello.cpp
+      - ./hello_cpp
 
-  - name: test
-    image: node:lts
-    pull: always
+  - name: test-python
+    image: python:3.9
     commands:
-      - npm test
+      - python test.py
 
-  - name: generate-artifacts
-    image: node:lts
-    pull: always
+  - name: lint-python
+    image: python:3.9
     commands:
-      - npm run generate-artifacts
+      - pip install pylint
+      - pylint script.py
 
-  - name: deploy
-    image: <deployment-image>
-    pull: always
+  - name: cleanup
+    image: alpine
     commands:
-      - ./deploy.sh
+      - rm -rf build/
+      - echo "Cleanup completed"
+ 
+trigger:
+  branch:
+  - main
