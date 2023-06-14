@@ -14,7 +14,7 @@ steps:
       - echo "Setting up the pipeline"
 
   - name: build
-    image: gcc:latest
+    image: arm64v8/gcc:latest
     commands:
       - g++ -o hello_cpp hello.cpp
       - ./hello_cpp
