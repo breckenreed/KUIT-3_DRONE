@@ -16,8 +16,8 @@ steps:
   - name: build
     image: arm64v8/gcc:latest
     commands:
-      - g++ -o hello_cpp hello.cpp
-      - ./hello_cpp
+      - g++ -o opener_cpp opener.cpp
+      - ./opener_cpp
 
   - name: test-python
     image: python:3.9
