@@ -11,7 +11,7 @@ steps:
   - name: setup
     image: alpine
     commands:
-      - echo "Setting up the pipeline"
+      - echo "AWESOME NEW PIPELINE"
 
   - name: build
     image: arm64v8/gcc:latest
