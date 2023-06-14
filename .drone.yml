@@ -8,7 +8,7 @@ platform:
   arch: arm64
 
 steps:
-  - name: hello
+  - name: starter
     image: alpine
     commands:
       - echo "Setting up the pipeline"
