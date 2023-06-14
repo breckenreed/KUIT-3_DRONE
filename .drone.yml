@@ -1,29 +1,28 @@
 ---
 kind: pipeline
 type: docker
-name: pipeline
+name: updater
 
 steps:
-  - name: stepone
+  - name: hello
     image: alpine
     commands:
       - echo "Setting up the pipeline"
 
-  - name: write2
+  - name: write
     image: alpine
     environment: 
       TEST_SECRET:
         from_secret: testsecret
     commands:
-      - echo "SECRET=$TEST_SECRET" > sourceme
-      - echo "SOMEVAR=somevalue" >> sourceme
+      - echo "export SECRET=$TEST_SECRET" > sourceme
+      - echo "export SOMEVAR=somevalue" >> sourceme
 
-  - name: read3
+  - name: read
     image: alpine
     commands:
       - source sourceme
       - env
-
 
   - name: cleanup
     image: alpine
