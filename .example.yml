@@ -28,7 +28,7 @@ steps:
     image: python:3.9
     commands:
       - pip install pylint
-      - pylint script.py
+      - pylint calc.py
 
   - name: cleanup
     image: alpine
