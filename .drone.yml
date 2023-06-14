@@ -3,6 +3,10 @@ kind: pipeline
 type: docker
 name: updater
 
+platform:
+  os: linux
+  arch: arm64
+
 steps:
   - name: hello
     image: alpine
